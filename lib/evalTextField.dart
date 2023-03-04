@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'evalText.dart';
 
@@ -40,6 +41,21 @@ class _EvalTextFieldState extends State<EvalTextField> {
 
     // return null if the text is valid
     return null;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  //Loading counter value on start
+  Future<void> _loadData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      widget.text = (prefs.getString(widget.label) ?? '0');
+      _controller.text = widget.text;
+    });
   }
 
   /*
@@ -87,8 +103,11 @@ class _EvalTextFieldState extends State<EvalTextField> {
   /*
    * Handle changes to the text.
    */
-  void onTextChanged(text) {
-    widget.text = _controller.text;
-    setState(() {});
+  Future<void> onTextChanged(text) async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      widget.text = _controller.text;
+      prefs.setString(widget.label, widget.text);
+    });
   }
 }

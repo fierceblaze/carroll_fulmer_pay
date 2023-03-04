@@ -11,20 +11,30 @@ I originally created a version an iOS only version in Swift with SwiftUI but I l
 code. I decided to recreate the app from scratch in Flutter 3.7.x and I am uploading it to GIT so I
 don't loose it again.
 
-There are probably faster and cleaner ways to create this app but this is my first full app in
-Flutter so excuse my mess.
+## Tax Information
+
+The federal taxes are calculated from the 2023 versions of...
+
+- IRS Publication 15-T: Federal Income Tax Withholding Methods.
+- IRS Form W4: Employee’s Withholding Certificate.
+
+The rest of the taxes I calculated from...
+https://onpay.com/payroll/process/how-to-calculate-payroll-taxes
+
+I only implemented single filing status. If this app was for wide release I would have added a tax
+settings page but it seems like overkill for a personal tool. This is just for me.
 
 ## To Do
 
-- Add user data persistence for the text fields.
-
-If this app was for wide release I would add a tax settings page but it seems like overkill for a
-personal tool. This is just for me.
+- Nothing.
 
 ## Commits
-- 
 
-- 2023.03.04 12:45a - Added Tax Calculations
+- 2023.03.04 05:45p - Added Data Persistence
+    - Added data persistence for the text fields using shared_preferences.
+    - https://pub.dev/packages/shared_preferences
+
+- 2023.03.04 12:45p - Added Tax Calculations
     - Added tax calculations to the app.
 
 - 2023.03.04 12:45a - Added Pay Calculations
@@ -32,4 +42,6 @@ personal tool. This is just for me.
 
 - 2023.03.04 11:00a - Initial Commit
     - Created the initial layout of the app.
-    - Created the evaluated text edit widgets.
+    - Created custom evaluated text edit widgets.
+    - Added currency formatting using intl
+    - https://pub.dev/packages/intl
