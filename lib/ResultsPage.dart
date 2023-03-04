@@ -61,9 +61,9 @@ class _ResultsPageState extends State<ResultsPage> {
                 blankRow(),
                 headerRow('Taxes', ''),
                 quickRow('Federal', usd(taxFederal)),
-                quickRow('State', usd(taxState)),
-                quickRow('Medicate', usd(taxMedicare)),
+                quickRow('Medicare', usd(taxMedicare)),
                 quickRow('Social Security', usd(taxSocialSecurity)),
+                quickRow('State', usd(taxState)),
                 blankRow(),
                 quickRow('Net Pay', usd(netPay)),
 

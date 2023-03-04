@@ -16,13 +16,20 @@ Flutter so excuse my mess.
 
 ## To Do
 
-- Tax calculations
+- Add user data persistence for the text fields.
+
+If this app was for wide release I would add a tax settings page but it seems like overkill for a
+personal tool. This is just for me.
 
 ## Commits
+- 
 
-- 2023.03.04 11:00a - Added Pay Calculations
+- 2023.03.04 12:45a - Added Tax Calculations
+    - Added tax calculations to the app.
+
+- 2023.03.04 12:45a - Added Pay Calculations
     - Added pay calculations to the app.
--
+
 - 2023.03.04 11:00a - Initial Commit
     - Created the initial layout of the app.
     - Created the evaluated text edit widgets.

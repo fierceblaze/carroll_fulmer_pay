@@ -1,3 +1,5 @@
+import 'FederalTaxes.dart';
+
 class Calculate {
   static const baseRate = 0.37;
 
@@ -35,18 +37,25 @@ class Calculate {
   }
 
   static double federalTax(double pay) {
-    return 0.0;
+    FederalTaxes tax = FederalTaxes();
+    return tax.calculate(pay);
   }
 
   static double stateTax(double pay) {
-    return 0.0;
+    double taxPercent = 5;
+    double taxRate = taxPercent / 100;
+    return pay * taxRate;
   }
 
   static double medicareTax(double pay) {
-    return 0.0;
+    double taxPercent = 1.45;
+    double taxRate = taxPercent / 100;
+    return pay * taxRate;
   }
 
   static double socialSecurityTax(double pay) {
-    return 0.0;
+    double taxPercent = 6.2;
+    double taxRate = taxPercent / 100;
+    return pay * taxRate;
   }
 }
