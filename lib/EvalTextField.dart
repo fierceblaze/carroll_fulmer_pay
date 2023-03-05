@@ -8,8 +8,11 @@ class EvalTextField extends StatefulWidget {
 
   final String label;
 
-  bool isValid = false;
   String text = '';
+
+  bool isValid() {
+    return EvalText.isValid(text);
+  }
 
   double? evaluate() {
     return EvalText.eval(text);
@@ -28,16 +31,15 @@ class _EvalTextFieldState extends State<EvalTextField> {
   String? get _errorText {
     final text = _controller.text;
 
-    widget.isValid = false;
-
     // Check if the text is empty
-    if (text.isEmpty) return "Should not be empty";
+    if (text.isEmpty) {
+      return "Should not be empty";
+    }
 
     // Check if the text matches out pattern.
-    if (!EvalText.isValid(text))
+    if (!EvalText.isValid(text)) {
       return "Invalid expression. Example: 1 + 2 - 3";
-
-    widget.isValid = true;
+    }
 
     // return null if the text is valid
     return null;
@@ -80,10 +82,10 @@ class _EvalTextFieldState extends State<EvalTextField> {
           label: Text(widget.label),
           // hintText: 'Enter Miles',
           errorText: _errorText,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
           suffixIcon: IconButton(
             onPressed: onClearPressed,
-            icon: Icon(Icons.cancel),
+            icon: const Icon(Icons.cancel),
           ),
         ),
         onChanged: onTextChanged,

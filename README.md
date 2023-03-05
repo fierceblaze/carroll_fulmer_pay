@@ -30,6 +30,9 @@ settings page but it seems like overkill for a personal tool. This is just for m
 
 ## Commits
 
+- 2023.03.05 01:15p - Cleaning up some code.
+    - Cleaned up some of the code.
+
 - 2023.03.04 05:45p - Added Data Persistence
     - Added data persistence for the text fields using shared_preferences.
     - https://pub.dev/packages/shared_preferences

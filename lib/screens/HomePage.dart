@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../EvalTextField.dart';
 import 'ResultsPage.dart';
-import 'evalTextField.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -14,9 +14,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // Create the text fields.
-  EvalTextField _milesTextField = EvalTextField(label: 'Miles');
-  EvalTextField _bonusesTextField = EvalTextField(label: 'Bonuses');
-  EvalTextField _deductionsTextField = EvalTextField(label: 'Deductions');
+  final EvalTextField _milesTextField = EvalTextField(label: 'Miles');
+  final EvalTextField _bonusesTextField = EvalTextField(label: 'Bonuses');
+  final EvalTextField _deductionsTextField = EvalTextField(label: 'Deductions');
 
   String errorText = '';
 
@@ -24,7 +24,13 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          style: const TextStyle(
+            fontSize: 14.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -57,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                 width: double.infinity,
                 child: Text(
                   errorText,
-                  style: TextStyle(color: Colors.red),
+                  style: const TextStyle(color: Colors.red),
                 ),
               ),
             ],
@@ -77,15 +83,15 @@ class _HomePageState extends State<HomePage> {
      * Validate the text fields.
      */
 
-    if (!_milesTextField.isValid) {
+    if (!_milesTextField.isValid()) {
       errors += 'Miles data is invalid.\n';
     }
 
-    if (!_bonusesTextField.isValid) {
+    if (!_bonusesTextField.isValid()) {
       errors += 'Bonus data is invalid.\n';
     }
 
-    if (!_deductionsTextField.isValid) {
+    if (!_deductionsTextField.isValid()) {
       errors += 'Deduction data is invalid.\n';
     }
 
@@ -136,12 +142,11 @@ class _HomePageState extends State<HomePage> {
     // Navigate to the results page.
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) =>
-            ResultsPage(
-              miles: miles,
-              bonuses: bonuses,
-              deductions: deductions,
-            ),
+        builder: (context) => ResultsPage(
+          miles: miles,
+          bonuses: bonuses,
+          deductions: deductions,
+        ),
       ),
     );
   }

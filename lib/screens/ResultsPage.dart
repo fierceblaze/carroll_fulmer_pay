@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'calculate.dart';
+import '../calculate.dart';
 
 class ResultsPage extends StatefulWidget {
   const ResultsPage(
@@ -40,7 +40,7 @@ class _ResultsPageState extends State<ResultsPage> {
     // Build
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pay'),
+        title: const Text('Pay'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -49,23 +49,33 @@ class _ResultsPageState extends State<ResultsPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                quickRow('Miles', miles.toString()),
-                blankRow(),
-                headerRow('Earnings', ''),
-                quickRow('Gross Pay', usd(grossPay)),
-                quickRow('Bonuses', usd(bonuses)),
-                blankRow(),
-                headerRow('Deductions', ''),
-                quickRow('Deductions', usd(deductions)),
-                quickRow('Travel Expense', usd(tierPay * -1)),
-                blankRow(),
-                headerRow('Taxes', ''),
-                quickRow('Federal', usd(taxFederal)),
-                quickRow('Medicare', usd(taxMedicare)),
-                quickRow('Social Security', usd(taxSocialSecurity)),
-                quickRow('State', usd(taxState)),
-                blankRow(),
-                quickRow('Net Pay', usd(netPay)),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColorLight,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: Column(
+                    children: [
+                      quickRow('Miles', miles.toString()),
+                      blankRow(),
+                      headerRow('Earnings', ''),
+                      quickRow('Gross Pay', usd(grossPay)),
+                      quickRow('Bonuses', usd(bonuses)),
+                      blankRow(),
+                      headerRow('Deductions', ''),
+                      quickRow('Deductions', usd(deductions)),
+                      quickRow('Travel Expense', usd(tierPay * -1)),
+                      blankRow(),
+                      headerRow('Taxes', ''),
+                      quickRow('Federal', usd(taxFederal)),
+                      quickRow('Medicare', usd(taxMedicare)),
+                      quickRow('Social Security', usd(taxSocialSecurity)),
+                      quickRow('State', usd(taxState)),
+                      blankRow(),
+                      quickRow('Net Pay', usd(netPay)),
+                    ],
+                  ),
+                ),
 
                 /*
                  * OK Button
@@ -96,9 +106,9 @@ class _ResultsPageState extends State<ResultsPage> {
   /*
    * Shortcut method to format currency.
    */
-  String usd(double amt) {
+  String usd(double sum) {
     return NumberFormat.simpleCurrency(locale: 'EN-us', decimalDigits: 2)
-        .format(amt);
+        .format(sum);
   }
 
   /*
@@ -114,7 +124,7 @@ class _ResultsPageState extends State<ResultsPage> {
   Widget headerRow(String row1, String row2) {
     rowNum++;
     return Container(
-      color: (rowNum % 2 == 0) ? Colors.black12 : Colors.black26,
+      color: (rowNum % 2 == 0) ? Colors.white70 : Colors.white60,
       padding: const EdgeInsets.all(5.0),
       child: Row(
         children: [
@@ -138,8 +148,8 @@ class _ResultsPageState extends State<ResultsPage> {
   Widget quickRow(String row1, String row2) {
     rowNum++;
     return Container(
-      color: (rowNum % 2 == 0) ? Colors.black12 : Colors.black26,
-      padding: EdgeInsets.all(5.0),
+      color: (rowNum % 2 == 0) ? Colors.white70 : Colors.white60,
+      padding: const EdgeInsets.all(5.0),
       child: Row(
         children: [
           Expanded(

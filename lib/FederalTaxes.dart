@@ -1,10 +1,14 @@
+// Form W4: Filing Statuses
 enum FilingStatus {
-  single, // Single or Married filing separately
-  married, // Married filing jointly or Qualifying surviving spouse
-  headOfHousehold // Head of household
+  // Single or Married filing separately
+  single,
+  // Married filing jointly or Qualifying surviving spouse
+  married,
+  // Head of household
+  headOfHousehold
 }
 
-// table3
+// Publication 15-T (2023): Table 3 (Page 9)
 enum PayPeriod {
   semiannually,
   quarterly,
@@ -15,18 +19,34 @@ enum PayPeriod {
   daily,
 }
 
+/*
+ * This is my truncated, hardcoded version of
+ * Form W4: Employee’s Withholding Certificate
+ *
+ * I would like to add a setting screen to fill out this data.
+ */
+class W4 {
+  final FilingStatus step1c = FilingStatus.single;
+  final bool step2check = false;
+  final double step3 = 0;
+  final double step4a = 0;
+  final double step4b = 0;
+  final double step4c = 0;
+}
+
+/*
+ * This is my interpretation of
+ * Publication 15-T: Federal Income Tax Withholding Methods (For 2003)
+ *
+ * Specifically of
+ * Worksheet 1A: Employer’s Withholding Worksheet for Percentage Method Tables for Automated Payroll Systems
+ */
 class FederalTaxes {
-  FilingStatus w4_1c = FilingStatus.single;
-  bool w4_checkbox = false;
-  double w4_3 = 0;
-  double w4_4a = 0;
-  double w4_4b = 0;
-  double w4_4c = 0;
+  double _pay = 0;
+  final PayPeriod _payPeriod = PayPeriod.weekly;
+  final W4 _w4 = W4();
 
-  double pay = 0;
-  PayPeriod payPeriod = PayPeriod.weekly;
-
-  final Map<PayPeriod, double> table3 = {
+  final Map<PayPeriod, double> _table3 = {
     PayPeriod.semiannually: 2,
     PayPeriod.quarterly: 4,
     PayPeriod.monthly: 12,
@@ -38,7 +58,7 @@ class FederalTaxes {
 
   // Columns A and E are the same.
   // Column B is the same as A without the first item.
-  final List<double> standardSingleColumnA = [
+  final List<double> _standardSingleColumnA = [
     0,
     5250,
     16250,
@@ -48,7 +68,7 @@ class FederalTaxes {
     236500,
     583375
   ];
-  final List<double> standardSingleColumnC = [
+  final List<double> _standardSingleColumnC = [
     0,
     0,
     1100,
@@ -58,26 +78,31 @@ class FederalTaxes {
     52832,
     174238.25
   ];
-  final List<double> standardSingleColumnD = [0, 10, 12, 22, 24, 32, 35, 37];
+  final List<double> _standardSingleColumnD = [0, 10, 12, 22, 24, 32, 35, 37];
 
+  /*
+   * Public entry point.
+   */
   double calculate(pay) {
-    this.pay = pay;
+    _pay = pay;
     return step4();
   }
 
-  // Step 1. Adjust the employee's payment amount.
-  double step1() {
-    double a = pay;
-    double b = table3[payPeriod]!;
+  /*
+   * Step 1. Adjust the employee's payment amount.
+   */
+  double _step1() {
+    double a = _pay;
+    double b = _table3[_payPeriod]!;
     double c = a * b;
 
-    double d = w4_4a;
+    double d = _w4.step4a;
     double e = c + d;
-    double f = w4_4b;
+    double f = _w4.step4b;
     double g = 0;
 
-    if (w4_checkbox == false) {
-      if (w4_1c == FilingStatus.married) {
+    if (_w4.step2check == false) {
+      if (_w4.step1c == FilingStatus.married) {
         g = 12900;
       } else {
         g = 8600;
@@ -91,43 +116,53 @@ class FederalTaxes {
     return (i < 0) ? 0 : i;
   }
 
-  // Step 2. Figure the Tentative Withholding Amount
-  double step2() {
-    double a = step1();
-    int apm = annualPercentageMethod(a);
-    double b = standardSingleColumnA[apm];
-    double c = standardSingleColumnC[apm];
-    double d = standardSingleColumnD[apm];
+  /*
+   * Step 2. Figure the Tentative Withholding Amount
+   */
+  double _step2() {
+    double a = _step1();
+    int apm = _annualPercentageMethod(a);
+    double b = _standardSingleColumnA[apm];
+    double c = _standardSingleColumnC[apm];
+    double d = _standardSingleColumnD[apm];
     double e = a - b;
     double f = e * (d / 100);
     double g = c + f;
-    double h = g / table3[payPeriod]!;
+    double h = g / _table3[_payPeriod]!;
 
     return h;
   }
 
-  // Step 3. Account for tax credits
-  double step3() {
-    double a = w4_3;
-    double b = a / table3[payPeriod]!;
-    double c = step2() - b;
+  /*
+   * Step 3. Account for tax credits
+   */
+  double _step3() {
+    double a = _w4.step3;
+    double b = a / _table3[_payPeriod]!;
+    double c = _step2() - b;
 
     return (c < 0) ? 0 : c;
   }
 
-  // Step 4. Figure the final amount to withhold
+  /*
+   * Step 4. Figure the final amount to withhold
+   */
   double step4() {
-    double a = w4_4c;
-    double b = step3() + a;
+    double a = _w4.step4c;
+    double b = _step3() + a;
 
     return b;
   }
 
-  int annualPercentageMethod(double wage) {
-    int lastElement = standardSingleColumnA.length - 1;
-    for (var i = 0; i < standardSingleColumnA.length; i++) {
-      if (wage >= standardSingleColumnA[i]) {
-        if (i == lastElement || wage < standardSingleColumnA[i + 1]) {
+  /*
+   * This is a truncated lookup function for
+   * Percentage Method Tables for Automated Payroll Systems (Publication 15-T, 2023, Page 11)
+   */
+  int _annualPercentageMethod(double wage) {
+    int lastElement = _standardSingleColumnA.length - 1;
+    for (var i = 0; i < _standardSingleColumnA.length; i++) {
+      if (wage >= _standardSingleColumnA[i]) {
+        if (i == lastElement || wage < _standardSingleColumnA[i + 1]) {
           return i;
         }
       }

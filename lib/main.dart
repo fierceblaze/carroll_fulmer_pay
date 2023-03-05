@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'HomePage.dart';
+import 'screens/HomePage.dart';
 
 void main() {
   //runApp(Text("Hello World.", textDirection: TextDirection.ltr));
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: appTitle,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // useMaterial3: false,
+        // useMaterial3: true,
         // colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue),
         primarySwatch: Colors.blue,
       ),

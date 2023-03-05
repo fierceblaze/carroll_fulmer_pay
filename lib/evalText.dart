@@ -3,7 +3,7 @@ class EvalText {
    * Checks if the text is in a valid format. (mostly)
    */
   static isValid(text) {
-    return text.contains(RegExp(r'^[0-9\/ *.+-]+$'));
+    return text.contains(RegExp(r'^[0-9/ *.+-]+$'));
   }
 
   /*
@@ -22,9 +22,9 @@ class EvalText {
     text = text.replaceAll(RegExp(r' '), '');
 
     // Find the first operation.
-    nextFind = text.indexOf(RegExp(r'[\\*+-]'));
+    nextFind = text.indexOf(RegExp(r'[/*+-]'));
 
-    // If there are no further operations...
+    // If there are no operations...
     if (nextFind == -1) {
       // Try parsing the text as a number and return it and exit.
       return double.tryParse(text);
@@ -39,9 +39,7 @@ class EvalText {
     // Set the new total.
     total = nextNumber;
 
-    // print('$label = $total');
-
-    while (true) {
+    do {
       // Get the next operation.
       lastFound = nextFind;
       nextFind++;
@@ -49,17 +47,19 @@ class EvalText {
 
       // Get the next number.
       lastFound = nextFind;
-      nextFind = text.indexOf(RegExp(r'[\/*+-]'), lastFound);
+      nextFind = text.indexOf(RegExp(r'[/*+-]'), lastFound);
 
-      // This is the last number
+      // Check if this is the last number in the sequence.
       if (nextFind == -1) {
         nextNumber = double.tryParse(text.substring(lastFound));
       } else {
         nextNumber = double.tryParse(text.substring(lastFound, nextFind));
       }
 
+      // If there was an error parsing the number then exit.
       if (nextNumber == null) return null;
 
+      // Perform the operation.
       if (nextOperation == '+') {
         total += nextNumber;
       } else if (nextOperation == '-') {
@@ -69,12 +69,9 @@ class EvalText {
       } else if (nextOperation == '/') {
         total /= nextNumber;
       }
+    } while (nextFind != -1);
 
-      // print('$label $nextOperation $nextNumber = $total');
-
-      if (nextFind == -1) break;
-    }
-
+    // Return the solution.
     return total;
   }
 }
