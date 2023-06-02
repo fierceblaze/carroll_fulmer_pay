@@ -27,6 +27,7 @@ class _ResultsPageState extends State<ResultsPage> {
     double miles = widget.miles;
     double bonuses = widget.bonuses;
     double deductions = widget.deductions;
+    double payRate = Calculate.payPerMile(miles);
     double basePay = Calculate.basePay(miles);
     double tierPay = Calculate.tierPay(miles);
     double grossPay = basePay + bonuses;
@@ -57,6 +58,7 @@ class _ResultsPageState extends State<ResultsPage> {
                   child: Column(
                     children: [
                       quickRow('Miles', miles.toString()),
+                      quickRow('Pay Per Mile', payRate.toString()),
                       blankRow(),
                       headerRow('Earnings', ''),
                       quickRow('Gross Pay', usd(grossPay)),

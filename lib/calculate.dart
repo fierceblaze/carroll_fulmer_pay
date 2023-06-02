@@ -16,7 +16,7 @@ class Calculate {
     Miles greater than or equal to 2,900 and less than 2,999 paid at $0.54 per mile
     Miles greater than or equal to 3,000 paid at $0.57 per mile
     */
-  static double tierPay(double miles) {
+  static double payPerMile(double miles) {
     double payRate = 0.0;
     if (miles >= 3000) {
       payRate = 0.57;
@@ -33,7 +33,11 @@ class Calculate {
     } else {
       payRate = 0.46;
     }
-    return miles * (payRate - baseRate);
+    return payRate;
+  }
+
+  static double tierPay(double miles) {
+    return miles * (payPerMile(miles) - baseRate);
   }
 
   static double federalTax(double pay) {
